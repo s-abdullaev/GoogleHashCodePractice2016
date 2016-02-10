@@ -45,7 +45,7 @@ def drawForRowBlock(subImg, startRow):
         lines=findLines(subImg[i,:])
         for l in lines:
             start=(startRow+i, l.start())
-            end=(startRow+i, l.end()-1)
+            end=(startRow+i, l.end())
             cmd=LineCommand(start, end)
             drwMgr.line(cmd)
 
@@ -62,13 +62,13 @@ def drawForColumnBlock(subImg, startCol):
             S=(r-1)/2
             cmd=SquareCommand(center, S)
             drwMgr.square(cmd)
-    
+#    
     #draw vertical lines
     for i in range(r):
         lines=findLines(subImg[:,i])
         for l in lines:
             start=(l.start(), startCol+i)
-            end=(l.end()-1, startCol+i)
+            end=(l.end(), startCol+i)
             cmd=LineCommand(start, end)
             drwMgr.line(cmd)
 
