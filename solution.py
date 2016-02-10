@@ -84,18 +84,13 @@ def hasSequence(source, seq):
         return [m.start() for m in re.finditer(b, a)]
     return []
 
-#initialize for each row, base case
-#for i in range(0,n):
-#    curCmds=optCmds(img[i,:],i)
-#    cmdCosts[i,0]=len(curCmds)
-
 #draw for every horizontal block
-for k in range(0, n/2):
+for k in range(0, n):
     for i in range(0,n-k):
         drawForRowBlock(img[i:i+k+1,:],i)
         
 #draw for every vertical block
-for k in range(0, m/2):
+for k in range(0, m):
     for i in range(0,m-k):
         drawForColumnBlock(img[:,i:i+k+1],i)
 
@@ -103,7 +98,3 @@ print drwMgr.drwer.img
 
 drwMgr.optimizeCmds()
         
-#        curCmds=optCmds(img[i:i+k+1,:],i)
-#        cmdCosts[i+k,k]=sum(cmdCosts[i+k-1:i+k+1,k-1])
-
-#print cmdCosts

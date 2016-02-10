@@ -75,7 +75,7 @@ class DrawManager(object):
         
         for i, s in enumerate(sets):
             m.addConstr(quicksum(s)>=1,'cons%d' % i)
-        
+        m.setParam('OutputFlag', False)
         m.optimize()
         #m.printAttr('X')
         for c in self.cmder.cmds:
