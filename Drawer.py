@@ -16,7 +16,7 @@ class SquareCommand(Command):
         self.S=S
         
     def getString(self):
-        return "PAINT_SQUARE %d %d %d" % (self.center[0]+1, self.center[1]+1, self.S)
+        return "PAINT_SQUARE %d %d %d" % (self.center[0], self.center[1], self.S)
 
 class LineCommand(Command):
     def __init__(self, start, end):
@@ -25,7 +25,11 @@ class LineCommand(Command):
         self.end=end
         
     def getString(self):
-        return "PAINT_LINE %d %d %d %d" % (self.start[0]+1, self.start[1]+1, self.end[0]+1, self.end[1]+1)
+        
+        if self.start[0]==self.end[0]:
+            return "PAINT_LINE %d %d %d %d" % (self.start[0], self.start[1], self.end[0], self.end[1]-1)
+        elif self.start[1]==self.end[1]:
+            return "PAINT_LINE %d %d %d %d" % (self.start[0], self.start[1], self.end[0]-1, self.end[1])
     
 class EraseCommand(Command):
     def __init__(self, spot):
@@ -78,11 +82,15 @@ class DrawManager(object):
         m.setParam('OutputFlag', False)
         m.optimize()
         #m.printAttr('X')
-        for c in self.cmder.cmds:
-            if v[c.label].X==1:
-                print c.getString()
-        
 
+        cmds=[c for c in self.cmder.cmds if v[c.label].X==1]
+        cmdsStr=str(len(cmds))+"\n"
+        cmdsStr+="\n".join(c.getString() for c in cmds)
+        
+        with open("output.out", "w") as f:
+            f.write(cmdsStr)
+        print cmdsStr
+        
 class Commander(object):
     def __init__(self, shape):
         self.cmds=[]
