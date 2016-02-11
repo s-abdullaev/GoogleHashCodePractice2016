@@ -8,7 +8,7 @@ img=None
 n=0; m=0
 
 #reading input
-with open("logo.in", "r") as f:
+with open("right_angle.in", "r") as f:
     s=f.readline()
     s=s.split(" ")
     n=int(s[0])
@@ -78,7 +78,7 @@ for i in range(0,m):
 
 #draw for every size of sliding box
 maxBoxSize=min(m,n)
-for k in range(0, maxBoxSize):
+for k in range(0, maxBoxSize, 2):
     for i in range(0,n-k):
         for j in range(0, m-k):
             drawForSlidingBox(img[i:i+k+1,j:j+k+1], i, j)
