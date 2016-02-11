@@ -8,7 +8,7 @@ img=None
 n=0; m=0
 
 #reading input
-with open("learn_and_teach.in", "r") as f:
+with open("logo.in", "r") as f:
     s=f.readline()
     s=s.split(" ")
     n=int(s[0])
@@ -18,14 +18,10 @@ with open("learn_and_teach.in", "r") as f:
         l=l.replace('\n','')
         img[i,:]=[0 if el=="." else 1 for el in l]
 
-
+#manager which draws and keeps track of commands
 drwMgr=DrawManager(img)
 
-#optimal commands cost per init row i, per block size k
-#cmdCosts=np.zeros([n, n/2])
-#cmdCosts.fill(np.Inf)
-
-#finds optimal drawing for given block
+#draws horizontal lines
 def drawForRowBlock(subImg, startRow):
     #number of rows
     r=int(np.size(subImg, axis=0))
@@ -39,6 +35,7 @@ def drawForRowBlock(subImg, startRow):
             cmd=LineCommand(start, end)
             drwMgr.line(cmd)
 
+#draws vertical lines
 def drawForColumnBlock(subImg, startCol):
     #number of columns
     r=int(np.size(subImg, axis=1))
@@ -52,6 +49,7 @@ def drawForColumnBlock(subImg, startCol):
             cmd=LineCommand(start, end)
             drwMgr.line(cmd)
 
+#draws boxes for given block
 def drawForSlidingBox(subImg, startRow, startCol):
     #number of rows
     r=int(np.size(subImg, axis=0))
@@ -65,16 +63,10 @@ def drawForSlidingBox(subImg, startRow, startCol):
         cmd=SquareCommand(center, S)
         drwMgr.square(cmd)
 
+#finds lines
 def findLines(source):
     a="".join([str(el) for el in source])
     return [m for m in re.finditer("(1+)", a)]
-    
-def hasSequence(source, seq):
-    a="".join([str(el) for el in source])
-    b="".join([str(el) for el in seq])
-    if b in a:
-        return [m.start() for m in re.finditer(b, a)]
-    return []
 
 #draw for every horizontal block
 for i in range(0,n):
@@ -84,7 +76,7 @@ for i in range(0,n):
 for i in range(0,m):
     drawForColumnBlock(img[:,i:i+1],i)
 
-#draw for every vertical block
+#draw for every size of sliding box
 maxBoxSize=min(m,n)
 for k in range(0, maxBoxSize):
     for i in range(0,n-k):
@@ -93,5 +85,5 @@ for k in range(0, maxBoxSize):
 
 print drwMgr.drwer.img
 
+#remove redundant commands
 drwMgr.optimizeCmds()
-        
